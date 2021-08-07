@@ -6,6 +6,9 @@
 [![npm](https://img.shields.io/npm/dt/react-native-syan-image-picker.svg)](https://www.npmjs.com/package/react-native-syan-image-picker)
 [![npm](https://img.shields.io/npm/l/react-native-syan-image-picker.svg)](https://github.com/syanbo/react-native-syan-image-picker/blob/master/LICENSE)
 
+### 由于原作者不更新，才起了这个项目方便android11的使用。
+
+
 ## 功能介绍
 
 基于已有原生第三方框架封装的多图片选择组件，适用于 React Native App。
