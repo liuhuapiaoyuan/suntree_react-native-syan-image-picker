@@ -27,6 +27,7 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
+import com.yalantis.ucrop.view.OverlayView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -179,7 +180,7 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
         Activity currentActivity = getCurrentActivity();
         PictureSelector.create(currentActivity)
                 .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-                .loadImageEngine(GlideEngine.createGlideEngine())
+                .imageEngine(GlideEngine.createGlideEngine())
                 .maxSelectNum(imageCount)// 最大图片选择数量 int
                 .minSelectNum(0)// 最小选择数量 int
                 .imageSpanCount(4)// 每行显示个数 int
@@ -197,17 +198,18 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
                 .withAspectRatio(CropW, CropH)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
                 .hideBottomControls(isCrop)// 是否显示uCrop工具栏，默认不显示 true or false
                 .isGif(isGif)// 是否显示gif图片 true or false
-                .freeStyleCropEnabled(freeStyleCropEnabled)// 裁剪框是否可拖拽 true or false
+                // 裁剪框是否可拖拽 true or false
+                .freeStyleCropMode(freeStyleCropEnabled? OverlayView.FREESTYLE_CROP_MODE_ENABLE:OverlayView.FREESTYLE_CROP_MODE_DISABLE)
                 .circleDimmedLayer(showCropCircle)// 是否圆形裁剪 true or false
                 .showCropFrame(showCropFrame)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
                 .showCropGrid(showCropGrid)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-                .openClickSound(false)// 是否开启点击声音 true or false
+                .isOpenClickSound(false)// 是否开启点击声音 true or false
                 .cropCompressQuality(quality)// 裁剪压缩质量 默认90 int
                 .minimumCompressSize(minimumCompressSize)// 小于100kb的图片不压缩
                 .synOrAsy(true)//同步true或异步false 压缩 默认同步
                 .rotateEnabled(rotateEnabled) // 裁剪是否可旋转图片 true or false
                 .scaleEnabled(scaleEnabled)// 裁剪是否可放大缩小图片 true or false
-                .selectionMedia(selectList) // 当前已选中的图片 List
+                .selectionData(selectList) // 当前已选中的图片 List
                 .isWeChatStyle(isWeChatStyle)
                 .theme(showSelectedIndex ? R.style.picture_WeChat_style : 0)
                 .compressFocusAlpha(compressFocusAlpha)
@@ -239,19 +241,19 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
         Activity currentActivity = getCurrentActivity();
         PictureSelector.create(currentActivity)
                 .openCamera(PictureMimeType.ofImage())
-                .loadImageEngine(GlideEngine.createGlideEngine())
-                .imageFormat(isAndroidQ ? PictureMimeType.PNG_Q : PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
-                .enableCrop(isCrop)// 是否裁剪 true or false
-                .compress(compress)// 是否压缩 true or false
+                .imageEngine(GlideEngine.createGlideEngine())
+                .setCameraImageFormat(isAndroidQ ? PictureMimeType.PNG_Q : PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
+                .isEnableCrop(isCrop)// 是否裁剪 true or false
+                .isCompress(compress)// 是否压缩 true or false
                 .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                 .withAspectRatio(CropW, CropH)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
                 .hideBottomControls(isCrop)// 是否显示uCrop工具栏，默认不显示 true or false
-                .freeStyleCropEnabled(freeStyleCropEnabled)// 裁剪框是否可拖拽 true or false
+                .freeStyleCropMode(freeStyleCropEnabled? OverlayView.FREESTYLE_CROP_MODE_ENABLE:OverlayView.FREESTYLE_CROP_MODE_DISABLE)// 裁剪框是否可拖拽 true or false
                 .circleDimmedLayer(showCropCircle)// 是否圆形裁剪 true or false
                 .showCropFrame(showCropFrame)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
                 .showCropGrid(showCropGrid)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-                .openClickSound(false)// 是否开启点击声音 true or false
-                .cropCompressQuality(quality)// 裁剪压缩质量 默认90 int
+                .isOpenClickSound(false)// 是否开启点击声音 true or false
+                .cutOutQuality(quality)// 裁剪压缩质量 默认90 int
                 .minimumCompressSize(minimumCompressSize)// 小于100kb的图片不压缩
                 .synOrAsy(true)//同步true或异步false 压缩 默认同步
                 .rotateEnabled(rotateEnabled) // 裁剪是否可旋转图片 true or false
@@ -274,14 +276,14 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
         Activity currentActivity = getCurrentActivity();
         PictureSelector.create(currentActivity)
                 .openCamera(PictureMimeType.ofVideo())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-                .loadImageEngine(GlideEngine.createGlideEngine())
-                .selectionMedia(selectList) // 当前已选中的图片 List
-                .openClickSound(false)// 是否开启点击声音 true or false
+                .imageEngine(GlideEngine.createGlideEngine())
+                .selectionData(selectList) // 当前已选中的图片 List
+                .isOpenClickSound(false)// 是否开启点击声音 true or false
                 .maxSelectNum(imageCount)// 最大图片选择数量 int
                 .minSelectNum(0)// 最小选择数量 int
                 .imageSpanCount(4)// 每行显示个数 int
                 .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                .previewVideo(true)// 是否可预览视频 true or false
+                .isPreviewVideo(true)// 是否可预览视频 true or false
                 .videoQuality(quality)// 视频录制质量 0 or 1 int
                 .videoMaxSecond(MaxSecond)// 显示多少秒以内的视频or音频也可适用 int
                 .videoMinSecond(MinSecond)// 显示多少秒以内的视频or音频也可适用 int
@@ -303,15 +305,15 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
         Activity currentActivity = getCurrentActivity();
         PictureSelector.create(currentActivity)
                 .openGallery(PictureMimeType.ofVideo())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-                .loadImageEngine(GlideEngine.createGlideEngine())
-                .selectionMedia(selectList) // 当前已选中的视频 List
-                .openClickSound(false)// 是否开启点击声音 true or false
+                .imageEngine(GlideEngine.createGlideEngine())
+                .selectionData(selectList) // 当前已选中的视频 List
+                .isOpenClickSound(false)// 是否开启点击声音 true or false
                 .isCamera(isCamera)// 是否显示拍照按钮 true or false
                 .maxSelectNum(videoCount)// 最大视频选择数量 int
                 .minSelectNum(1)// 最小选择数量 int
                 .imageSpanCount(4)// 每行显示个数 int
                 .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                .previewVideo(true)// 是否可预览视频 true or false
+                .isPreviewVideo(true)// 是否可预览视频 true or false
                 .videoQuality(quality)// 视频录制质量 0 or 1 int
                 .videoMaxSecond(MaxSecond)// 显示多少秒以内的视频or音频也可适用 int
                 .videoMinSecond(MinSecond)// 显示多少秒以内的视频or音频也可适用 int
