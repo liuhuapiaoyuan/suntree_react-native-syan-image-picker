@@ -1,6 +1,6 @@
 {
   "name": "@suntree/react-native-syan-image-picker",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "React-Native 多图片选择 支持裁剪 压缩[android11修复版]",
   "main": "src/index.js",
   "types": "src/index.d.ts",
