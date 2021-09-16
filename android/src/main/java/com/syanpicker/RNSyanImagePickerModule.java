@@ -361,13 +361,15 @@ public class RNSyanImagePickerModule extends ReactContextBaseJavaModule {
                 Boolean isAndroidQ = SdkVersionUtils.checkedAndroid_Q();
                 Boolean isAndroidR = SdkVersionUtils.checkedAndroid_R();
 
-                String filePath = media.getPath();
+                String filePath = media.getRealPath();
+              /*   String filePath = media.getPath();
                 if (isAndroidQ){
                     filePath = media.getAndroidQToPath();
                 }
                 if (isAndroidR){
                     filePath = media.getRealPath();
                 }
+                 */
 
                 videoMap.putString("uri", "file://" + filePath);
                 videoMap.putString("coverUri", "file://" + this.getVideoCover(filePath));
